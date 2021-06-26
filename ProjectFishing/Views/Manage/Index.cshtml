@@ -1,0 +1,48 @@
+﻿@model ProjectFishing.Models.IndexViewModel
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="container">
+    <h4>Изменение параметров учетной записи</h4>
+    <hr />
+    <dl class="">
+        <dd>
+
+            @if (Model.HasPassword)
+            {
+                <label>Сменить пароль: </label>
+                <a href="/Manage/ChangePassword" class="btn btn-default">
+                    Сменить пароль
+                </a>
+            }
+            else
+            {
+                @Html.ActionLink("Создать", "SetPassword")
+            }
+
+        </dd>
+        <dt>Текущая аватарка: </dt>
+        <dd>
+            <img src="~/images/ForViews/Manage/@Model.Image" style="width:130px; height:130px" />
+            @using (Html.BeginForm("ChangeImage", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="file" value="Сменить аватарку" name="files" accept="image/png, image/jpeg, image/jpg" width="100" height="100" />
+                <p class="help-block">Загрузить фото</p>
+                <button type="submit" class="btn btn-default">Сменить аватарку</button>
+            }
+        </dd>
+        <dd>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+            {
+                @Html.AntiForgeryToken()
+                <br />
+                <a class="btn btn-danger" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
+
+            }
+        </dd>
+        
+    </dl>
+    
+
+
+</div>

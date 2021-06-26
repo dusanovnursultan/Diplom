@@ -1,0 +1,271 @@
+﻿@using Microsoft.AspNet.Identity
+@model ProjectFishing.Models.ForumComment
+<script>
+    var mainApp = angular.module("mainApp", ['angularUtils.directives.dirPagination']);
+    mainApp.controller("mainController", function ($scope, $http, $sce) {
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.Thread = [];
+        $scope.IsClosed;
+        $scope.Data = {
+            Comment:
+            {
+                Text: '',
+                Message: '',
+                Date: '',
+                UserId: '',
+                WhoToAnswer: '',
+                Discussion: ''
+            }
+        };
+        $http({
+            method: 'GET',
+            url: '/Forum/GetThread/' + @ViewBag.Id,
+        })
+        .then(function succes(responce) {
+            $scope.Thread = responce.data;
+            console.log($scope.Thread);
+            CheckUser = function () {
+                var activeUser = '@User.Identity.GetUserId()';
+                $scope.User = $scope.Thread.Discussion.UserId;
+                if (activeUser != $scope.User) {
+                    document.getElementById('ClosedThread').hidden = true;
+                }
+            };
+            CheckUser();
+        });
+        loadComments = function (num) {
+            $http({
+                method: 'GET',
+                url: '/Forum/GetComments?Id=' + @ViewBag.Id + '&Page=' + num,
+            })
+            .then(function succes(responce) {
+                $scope.Comments = responce.data;
+                $scope.currentPage = $scope.Comments.Page;
+                console.log($scope.Comments);
+            });
+        };
+        $scope.pageChangeHandler = function (num) {
+            loadComments(num);
+        };
+        $scope.WhoToAnswer = function (e) {
+            $scope.Text = "Отвечаем: " + e.UserName;
+            $scope.WhoToAnswerName = e.UserName;
+            $scope.Data.Comment.Message = e.Comment.Text;
+            $scope.Data.Comment.WhoToAnswer = e.Comment.UserId;
+            console.log($scope.Data.ForumComment);
+        };
+        $scope.upload = function () {
+            var element = document.getElementById('strike-editor').innerHTML;
+            document.getElementById('strike-editor').innerHTML = '';
+            if ($scope.WhoToAnswerName == undefined) {
+                $scope.Data.Comment.Text = element;
+            }
+            else {
+                var HtmlBorder = "<div style = 'border: 1px solid black;padding: 10px;'><h5> Сообщение от: " + $scope.WhoToAnswerName + "</h5><br/>" + $scope.Data.Comment.Message + "</div><br/>" + element;
+                $scope.Data.Comment.Text = HtmlBorder;
+            }
+            $scope.Data.Comment.Discussion = @ViewBag.Id;
+            console.log($scope.Data.Comment);
+            $http({
+                method: 'POST',
+                url: '/Forum/AddForumComment',
+                data: $scope.Data.Comment
+            })
+            .then(function succes(responce) {
+                loadComments($scope.currentPage);
+            });
+
+        }
+        $scope.UploudComment = function (e) {
+            var id = e.ForumCommentsId;
+            var element = document.getElementById(id);
+            element.innerHTML = $sce.trustAsHtml(e.Text);
+        }
+        loadComments($scope.currentPage);
+        updateForumComment = function (e) {
+            console.log(e);
+            $http({
+                method: 'POST',
+                url: '/Forum/UpdateForumComment/',
+                data: e
+            })
+                .then(function succes(responce) {
+                    $scope.Comments = responce.data;
+                    console.log($scope.Comments);
+                });
+        };
+        $scope.closeathread = function () {
+            if ($scope.Thread.Discussion.Closed == false) {
+                $scope.Thread.Discussion.Closed = true;
+                console.log($scope.Thread.Discussion);
+                updateForumComment($scope.Thread.Discussion);
+                loadComments();
+            }
+            else {
+                $scope.Thread.Discussion.Closed = false;
+                updateForumComment($scope.Thread.Discussion);
+                loadComments();
+            }
+        };
+    });
+</script>
+<head>
+    <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/dat-menu.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/main-stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/responsive.css" media="screen" />
+</head>
+<div class="container" ng-controller="mainController">
+    <div class="row">
+        <div id="main-box" class="full-width">
+            <div id="">
+                <div class="forum-block">
+                    <h2 class="container">
+                        <span>
+                            <i class="fa fa-lock" >
+                                {{Thread.Discussion.Title}}
+                            </i>
+                        </span>
+                    </h2>
+                    <div class="content-padding">
+                        <div class="forum-description">
+                            <div class="topic-right right" ng-switch on="Thread.Discussion.Closed">
+                                <span ng-switch-when="true">
+                                    <i class="fa fa-unlock-alt"></i>
+                                    Обсуждение закрыто
+                                </span>
+                            </div>
+                            <div id="ClosedThread" style="float:left">
+                                <div ng-switch on="Thread.Discussion.Closed">
+                                    <div ng-switch-when="false">
+                                        <a href="#" ng-click="closeathread()" class="newdefbutton margin-right admin-color"><i class="fa fa-lock"></i>Закрыть</a>
+                                    </div>
+                                    <div ng-switch-when="true">
+                                        <a href="#" ng-click="closeathread()" class="newdefbutton margin-right admin-color"><i class="fa fa-unlock"></i>Открыть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BEGIN .forum-thread -->
+                    <div class="forum-thread">
+                        <!--Наш вопрос-->
+                        <!-- BEGIN .forum-post -->
+                        <div class="forum-post" id="post-1">
+                            <div class="user-block">
+                                <a href="user-single.html" class="avatar online user-tooltip">
+                                    <span class="wrapimg" style="display:inline-block;position:relative;border-radius:inherit;-moz-border-radius:inherit;overflow:hidden;"><img src="~/images/ForViews/Manage/{{Thread.Image}}" class="setborder" title="" alt=""></span>
+                                </a>
+                                <div class="user-account">
+                                    <div>
+                                        <a href="user-single.html" class="forum-user user-tooltip"
+                                        <b>{{Thread.UserName}}</b>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="clear-float"></div>
+                            </div>
+                            <div class="post-text-block">
+                                <p>{{Thread.Discussion.Text}}.</p>
+                                <img ng-if="Thread.Discussion.Image != null" src="~/images/ForViews/Forum/{{Thread.Discussion.Image}}" />
+                                
+                            </div>
+                            <div class="post-meta-block">
+                                <div>
+                                    <span class="post-date">{{Thread.Discussion.Date}}</span>
+                                </div>
+                                <div class="bottom">
+                                    <a href="" class="defbutton scroll"><i class="fa fa-comment-o"></i>Reply</a>
+                                </div>
+                            </div>
+                            <!-- END .forum-post -->
+                        </div>
+
+                        <!-- BEGIN .forum-post -->
+                        <div class="forum-post" id="post-2" dir-paginate="item in Comments.Comments | itemsPerPage: pageSize" total-items="Comments.TotalCommentCount" current-page="currentPage">
+                            <div class="user-block">
+                                <a href="user-single.html" class="avatar offline user-tooltip">
+                                    <span class="wrapimg" style="display:inline-block;position:relative;border-radius:inherit;-moz-border-radius:inherit;overflow:hidden;"><img src="~/images/ForViews/Manage/{{item.Image}}" class="setborder" title="" alt=""></span>
+                                </a>
+                                <div class="user-account">
+                                    <div>
+                                        <a href="user-single.html" class="forum-user user-tooltip"><b>{{item.UserName}}</b></a>
+                                    </div>
+                                </div>
+                                <div class="clear-float"></div>
+                            </div>
+                            <div class="post-text-block" id="{{item.Comment.ForumCommentsId}}">
+                                {{UploudComment(item.Comment)}}
+                                <p>
+
+                                </p>
+                            </div>
+                            <div class="post-meta-block">
+                                <div>
+                                    <span class="post-date">{{item.Comment.Date}}</span>
+                                </div>
+
+                                <div class="bottom">
+                                    <a href="#quick-reply" ng-click="WhoToAnswer(item)" class="defbutton scroll"><i class="fa fa-comment-o"></i>Reply</a>
+                                </div>
+                            </div>
+                            <!-- END .forum-post -->
+                        </div>
+                        <!-- END .forum-thread -->
+                    </div>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <div ng-switch on="Thread.Discussion.Closed">
+                            <div ng-switch-when="true">
+                                <h5 class="text-center">Обсуждение закрыто</h5>
+                            </div>
+                            <div ng-switch-when="false">
+                                <form>
+                                    <div class="reply-box" style="display: block;">
+                                        <h5 class="reply-textarea">{{Text}}</h5>
+                                        <div class="reply-textarea">
+                                            <textarea class="temp-paste-text"></textarea>
+                                            <div class="respond-textarea">
+                                                <div class="textarea-arrow"></div>
+                                                <div class="textarea-wrapper strike-wysiwyg-enable" rel="wys-current">
+                                                    <textarea name="comment-text"></textarea>
+                                                    <div class="strike-wysiwyg" contenteditable="true" id="strike-editor">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="respond-submit">
+                                                <input type="submit" ng-click="upload()" name="send" value="Отправить">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <h5 class="text-center">Вам необходимо войти или зарегистрироваться, чтобы здесь отвечать.</h5>
+                    }
+                    <div class="content-padding">
+                        <div class="forum-description">
+                            <div>
+                                <div class="text-center">
+                                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" auto-hide="false">
+
+                                    </dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear-float"></div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,93 @@
+﻿@model ProjectFishing.Models.Ad
+
+@{
+    ViewBag.Title = "Создание объявления";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("AddAd", "FleaMarket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    <div class="comment-form  col-md-offset-2">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.CategoryId, ViewBag.Categories as SelectList, "Выберите категорию")
+              
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+      
+        <div class="form-group ">
+
+            <tex class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Name) })
+
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </tex>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Description) })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.PhoneNumber) })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Price) })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Загрузка фото</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" name="Image" class="custom-file-input " id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" multiple>
+
+            </div>
+            <div class="custom-file">
+                <input type="file" name="Image" class="custom-file-input " id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" multiple>
+
+            </div>
+            <div class="custom-file">
+                <input type="file" name="Image" class="custom-file-input " id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" multiple>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Создать" class="btn btn-default" />
+
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

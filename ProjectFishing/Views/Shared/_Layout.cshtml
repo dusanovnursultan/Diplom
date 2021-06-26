@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html ng-app="mainApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - приложение ASP.NET</title>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/jquery.min.js"></script>
+
+    <!-- Library Js -->
+    <script src="~/Scripts/lib.js"></script>
+
+
+
+    <!-- Library - Theme JS -->
+    <script src="~/Scripts/functions.js"></script>
+    <!-- Standard Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/images//favicon.ico" />
+
+    <!-- For iPhone 4 Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images//apple-touch-icon-114x114-precomposed.png">
+
+    <!-- For iPad: -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images//apple-touch-icon-72x72-precomposed.png">
+
+    <!-- For iPhone: -->
+    <link rel="apple-touch-icon-precomposed" href="~/images//apple-touch-icon-57x57-precomposed.png">
+
+    <!-- Library Css -->
+    <link rel="stylesheet" type="text/css" href="~/Content/lib.css">
+
+    <!-- Font Icons -->
+    <!-- Custom - Common CSS -->
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Site.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/navigation-menu.css">
+    <!-- Custom - Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/shortcodes.css">
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation">
+    <header class="header-main container-fluid no-padding">
+        <!-- Top Header  -->
+        <div class="top-header container-fluid no-padding">
+            <!-- Container -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-6 social">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-6 add-to-cart">
+                        <ul>
+                            <li><a href="#" title="Add To Cart"><i class="fa fa-shopping-cart"></i><span>1</span></a></li>
+                            @if (User.IsInRole("Manager")|| User.IsInRole("Admin"))
+                            {
+                                <li><a href="/Manage/ContentManage" title="Manage panel"><i class="fa fa-edit"></i></a></li>
+                            }
+
+                            @if (Request.IsAuthenticated)
+                            {
+                                <li><a href="/Manage/Index" title="My Account"><i class="fa fa-user"></i></a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/Account/Login" title="My Account"><i class="fa fa-user"></i></a></li>
+                            }
+                        </ul>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div><!-- Top Header /- -->
+        <!-- Menu Block -->
+        <div class="menu-block container-fluid no-pdding">
+            <!-- Container -->
+            <div class="container">
+                <!-- Navigation -->
+                <nav class="navbar ow-navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/Home/Index" title="Logo">Bovile</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/Home/Index" title="Home">Главная</a></li>
+                            <li><a href="/Lakes/ShowLakes" title="Lakes">Озера</a></li>
+                            <li><a href="/Fishes/ShowFishes" title="Fishies">Рыба</a></li>
+                            <li><a href="#" title="Partners">Партнёры</a></li>
+                            <li class="dropdown">
+                                <a href="#" title="Pages" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Ещё</a>
+                                <i class="ddl-switch fa fa-angle-down"></i>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/FleaMarket/ShowAds" title="Flea market">Барахолка</a></li>
+                                    <li><a href="/Home/Chat" title="Chats">Диалоги</a></li>
+                                    <li><a href="/Forum/Index" title="Forum">Форум</a></li>
+                                    <li><a href="7-faq.html" title="Faq"></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="8-blog.html" title="Новости" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Новости</a>
+                                <i class="ddl-switch fa fa-angle-down"></i>
+                            </li>
+                            <li><a href="11-contact-us.html" title="Contact Us">О нас</a></li>
+                        </ul>
+                    </div>
+                </nav><!-- Navigation -->
+            </div><!-- Container /- -->
+        </div><!-- Menu Block /- -->
+    </header><!-- Header /- -->
+
+    <div>
+        @RenderBody()
+        @RenderSection("scripts", required: false)
+        <hr />
+        <!-- Footer Main -->
+        <footer class="footer-main container-fluid no-padding">
+            <!-- Container -->
+            <div class="container">
+                <aside class="col-md-8 col-sm-6 col-xs-12 ftr-widget about-widget">
+                    <h3 class="widget-title">Активный отдых</h3>
+                    <p>Откуда бы вы ни были, мы рады видеть вас на нашем сайте, и надеемся, что здесь вы найдете для себя немало нужной и полезной информации!</p>
+                </aside><!-- Footer About Widget /- -->
+                <!-- Footer Newsleater Widget -->
+                <aside class="col-md-4 col-sm-6 col-xs-12 ftr-widget newsleater-widget">
+                    <h3 class="widget-title">subscribe newsletter</h3>
+                    <!-- Search Box -->
+                    <div class="search-box">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Email Address">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" title="Go">Go</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- Search Box /- -->
+                </aside><!-- Footer Newsleater Widget /- -->
+                <!-- Footer Bottom -->
+                <div class="footer-bottom col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-xs-6 copyright">
+                            <p>&copy; Copyright 2021. All Rights Reserved</p>
+                        </div>
+                    </div>
+                </div><!-- Footer Bottom /- -->
+            </div><!-- Container /- -->
+        </footer><!-- Footer Main /- -->
+        <!-- JQuery v1.11.3 -->
+
+    </div>
+
+
+
+    <!-- JQuery v1.11.3 -->
+
+</body>
+</html>

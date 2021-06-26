@@ -1,0 +1,102 @@
+﻿
+<head>
+    <script>
+        var mainApp = angular.module("mainApp", ['angularUtils.directives.dirPagination']);
+        var idViewBag = @ViewBag.Id;
+
+        mainApp.controller("mainController", function ($scope, $http) {
+            $scope.currentPage = 1;
+            $scope.pageSize = 10;
+            $scope.DiscussionList = [];
+            download = function (num) {
+                $http({
+                    method: 'GET',
+                    url: '/Forum/GetDiscussionsById?Id=' + idViewBag + '&Page=' + num,
+                })
+                .then(function succes(responce) {
+                    $scope.DiscussionList = responce.data;
+                    console.log($scope.DiscussionList);
+                });
+            }
+            download($scope.currentPage);
+            $scope.pageChangeHandler = function (num) {
+                download(num);
+             };
+        });
+    </script>
+    <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/dat-menu.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/main-stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/responsive.css" media="screen" />
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation" ng-controller="mainController">
+    <div class="blog-list container-fluid no-padding">
+        <div class="container">
+            <div class="row">
+                <div id="" class="full-width">
+                    <hr />
+                    <div id="main">
+                        <div class="forum-block">
+
+                            <h2><span>Обсуждения</span></h2>
+                            @{
+                                if (Request.IsAuthenticated)
+                                {
+                                    <div class="content-padding">
+                                        <div class="forum-description">
+                                            <a href="/Forum/AddDiscussion/@ViewBag.Id" class="defbutton big"><i class="fa fa-comment-o"></i>Создать новое обсуждение</a>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="forum-threads-head">
+                                <strong class="thread-subject"><span>Обсуждение</span></strong>
+                                <strong class="thread-author">Автор</strong>
+                                <strong class="thread-replies">Ответы</strong>
+                                <strong class="thread-views">Просмотры</strong>
+                                <strong class="thread-last">Дата добавления</strong>
+                            </div>
+                            <div class="forum-threads">
+                                <div class="thread-link thread-unread" dir-paginate="item in DiscussionList.Discussions | itemsPerPage: pageSize" total-items="DiscussionList.TotalDishesCount" current-page="currentPage">
+                                    <a href="/Forum/Thread/{{item.Discussion.DiscussionId}}">
+                                        <i class="forum-icon strike-tooltip" title="Topic has answers">
+                                            <i class="fa fa-comments-o"></i>
+                                        </i>
+                                        <span>{{item.Discussion.Title}}</span>
+                                    </a>
+                                    <div class="thread-author">
+                                        <span class="f-user-link"><a href="user-single.html"><strong>{{item.UserName}}</strong></a></span>
+                                    </div>
+                                    <div class="thread-replies">
+                                        <span>{{item.CountThread}}</span>
+                                    </div>
+                                    <div class="thread-views">
+                                        <span>{{item.Discussion.CountView}}</span>
+                                    </div>
+                                    <div class="thread-last">
+                                        <span class="f-user-link"><a href="user-single.html"><strong></strong></a></span>
+                                        <span class="t-date">{{item.Discussion.Date}}</span>
+                                    </div>
+                                    <!-- END .thread-link -->
+                                </div>
+                                <!-- END .forum-threads -->
+                            </div>
+                            <div>
+                                <div class="text-center">
+                                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" auto-hide="false">
+
+                                    </dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="clear-float"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

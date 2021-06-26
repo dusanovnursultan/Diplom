@@ -1,0 +1,31 @@
+﻿@model ProjectFishing.Models.RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container ">
+        <h4>Создание новой учетной записи.</h4>
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">ConfirmPassword</label>
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "ConfirmPassword" })
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-default" value="Регистрация" />
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

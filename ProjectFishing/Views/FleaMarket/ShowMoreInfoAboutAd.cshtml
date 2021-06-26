@@ -1,0 +1,131 @@
+﻿
+<head>
+    <script>
+
+        var mainApp = angular.module("mainApp", []);
+        var idViewBag = @ViewBag.IdAd;
+        mainApp.controller("mainController", function ($scope, $http) {
+            $scope.AdModel;
+            $scope.ImagesList;
+            $scope.IdAd = idViewBag;
+            var activeUser = "m";
+            $http({
+                method: 'GET',
+                url: '/FleaMarket/GetAdById/'+$scope.IdAd,
+
+            })
+                .then(function succes(responce) {
+                    $scope.AdModel = responce.data.Post;
+                    $scope.ImagesList = responce.data.Images;
+                    activeUser = $scope.AdModel.UserName;
+                    console.log($scope.AdModel);
+                    console.log($scope.ImagesList);
+                });
+
+        });
+    </script>
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation" ng-controller="mainController">
+
+    @*<div class="container">
+            <div class="blog-list container-fluid no-padding">
+                <div class="row">
+                    <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+            <!-- Content Area -->
+            <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+                <article class="type-post blog-onecolumn format-image">
+                    <div class="entry-cover ">
+                        <div>
+                            <div>
+                                <h1>{{AdModel.Name}}</h1>
+                                <span>👁 {{AdModel.ViewCount}}</span>
+                                <h6> {{AdModel.Date}}</h6>
+                            </div>
+
+                            <div class="photo-slider container-fluid no-padding">
+                                <!-- Main Carousel -->
+                                <div id="main-carousel" class="carousel slide carousel-fade col-offset-2">
+                                    <div class="carousel-inner " role="listbox">
+                                        <div class="item active">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Ads/{{ImagesList[0].Name}}" alt="gallery-1">
+                                            </div>
+                                        </div>
+                                        <div class="item" ng-if="ImagesList[1]!=null">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Ads/{{ImagesList[1].Name}}" alt="gallery-1">
+                                            </div>
+                                        </div>
+                                        <div class="item " ng-if="ImagesList[2]!=null">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Ads/{{ImagesList[2].Name}}" alt="gallery-1">
+                                            </div>
+                                        </div>
+                                        <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
+                                            <i class="fa fa-angle-left"></i>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
+                                            <i class="fa fa-angle-right"></i>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div><!-- Main Carousel /-  -->
+                                </div><!-- Photo Slider /- -->
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <h3>Описание: {{AdModel.Description}}</h3>
+                    </div>
+                    <div class="entry-title ">
+
+                      
+
+                    </div>
+                </article>
+            </div>
+
+            <h3>Цена :{{AdModel.Price}} ₽</h3>
+            <a href="#" title="Contact Us" class="btn btn-success " style=" height:auto; width:250px; text-align:right">
+                <h5 style="text-align:center">Позвонить</h5>
+                <h5 style="text-align:center ">Номер телефона: {{AdModel.PhoneNumber}}</h5>
+            </a>
+            <hr>
+            @if (Request.IsAuthenticated && User.Identity.Name != ViewBag.UserName)
+            {
+                <a href="/Home/Chat/{{AdModel.UserId}}" title="Contact Us" class="btn btn-primary " style="height:auto; width:250px; text-align:right">
+                    <h5 style="text-align:center">Написать</h5>
+                    <h5 style="text-align:center">{{AdModel.UserName}}</h5>
+                </a>
+            }
+            else if (Request.IsAuthenticated && User.Identity.Name == ViewBag.UserName)
+            {
+                <h4>Мое объявление</h4>
+            }
+            else
+            {
+                @*<h4>Чтобы добавлять свои объявления Войдите или Зарегистрируйтесь </h4>*@
+                <h4>Чтобы написать продавцу <a href="/Account/Login">Войдите</a> или <a href="/Account/Register">Зарегистрируйтесь</a>  </h4>
+            }
+
+
+
+            <!-- Content Area /- -->
+            <!-- Widget Area -->
+            @*@{Html.RenderPartial("CategoriesPartial");}*@
+        </div><!-- Row /- -->
+
+    </div>
+</body>

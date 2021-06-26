@@ -1,0 +1,302 @@
+﻿
+<head>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        header {
+            height: 10%;
+            text-align: center;
+        }
+
+            header h1 {
+                position: absolute;
+                width: 100%;
+            }
+
+        div[ng-controller], div[ng-init] {
+            position: relative;
+            height: 90%;
+        }
+
+        yandex-map {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .window {
+            background: rgba(255, 255, 255, 0.6);
+            position: absolute;
+            padding: 10px;
+            border-radius: 5px;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+
+
+
+
+    <style type="text/css" data-ymaps="css-modules">
+        .ymaps-2-1-78-error-message {
+            display: table;
+            margin: 10px 0;
+            padding: 0 10px 0 45px;
+            height: 25px;
+            background-position: 10px 50%;
+            background-repeat: no-repeat;
+            color: #000;
+            font: 13px/1.2 Arial,sans-serif
+        }
+
+        .ymaps-2-1-78-error-message__msg {
+            display: table-cell;
+            vertical-align: middle
+        }
+
+        .ymaps-2-1-78-error-message {
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNSIgaGVpZ2h0PSIyNSI+PHBhdGggZmlsbD0iI0JFQkVCRSIgZD0iTTEyLjUgMjVhMTIuNSAxMi41IDAgMSAwIDAtMjUgMTIuNSAxMi41IDAgMCAwIDAgMjVzLTYuOSAwIDAgMHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTIuNSAyMi4xMWE5LjUgOS41IDAgMSAwIDAtMTkgOS41IDkuNSAwIDAgMCAwIDE5YzAtLjAxLTUuMi0uMDEgMCAweiIvPjxlbGxpcHNlIGN4PSI4LjUiIGN5PSI5LjkiIGZpbGw9IiNCRUJFQkUiIHJ4PSIxLjUiIHJ5PSIxLjYiLz48ZWxsaXBzZSBjeD0iMTYuNSIgY3k9IjkuOSIgZmlsbD0iI0JFQkVCRSIgcng9IjEuNSIgcnk9IjEuNiIvPjxwYXRoIGZpbGw9IiNCRUJFQkUiIGQ9Ik0xMi41IDE0LjQ4YzMuMDQgMCA1LjUuNiA1LjUgMS40NCAwIC44LTIuNDYgMS40NC01LjUgMS40NFM3IDE2LjcyIDcgMTUuOTJjMC0uODIgMi41LTEuNDIgNS41LTEuNDR6Ii8+PC9zdmc+)
+        }
+        /**/
+    </style>
+    <style type="text/css" data-ymaps="css-modules">
+        .ymaps-2-1-78-pictogramCircleIconContent {
+            display: block;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: -11px;
+            left: -11px;
+        }
+
+        .ymaps_https___api_maps_yandex_ru_2_1_78_1466993048656islands_icon___1BAD03_34x41_1622882721949 {
+            display: block;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAApCAYAAABQgPsBAAAGKElEQVRYR71Ye2xTVRj/HSjL2NY6BBXKI8WFuWyZmwwDJnODiQsDtoTpokOJQuSZGJShmEhACCaiPEL8Q9xQNBkTHGNzlPfkNXks2Qas2OzBTIdAx2OutKXM0nLMd72nuZS1vZ2bJ+nW23vOd373933f7/vOZQgxOOdaAJkA0gDoAcQDoN8cAFoB3ADQAOAUY4x+69NggVbJAAoBLArDcjGAn/oCqFcgnPNcACvkJ8ev1oPaQ9aq2Ga7aWibvTnqnscxOFqj9U7QJbgSdMn3Z+rn2LJG5gg26P8Wxtj+MB4AjwHhnBOAuWSEAKy6sNTQ2XM9IpTRkZGj3Rtf+MbyyqiZAlAZY2xLqHXi/iNAOOdFAMgdWFhXYDh0vXK4WkNi3qzR+V3fTv7ZIl+TmzarseEDIrtjLS3KPJaY2O5oHSoMaIfo8JZhIaaPmoXEJ56Hbkgs7A9sMN9tQo31AHZZSuB4YPftl/rkiw7j1HMUyDTWqXGTBEQOzGqKCX8m5hrew+rkL6TNAw0CtcH0CcosO3xTFMyQq/JCBbAAQpmxiGLinXN5lJ7S+ChxHZYnfKqGWWnOtubP8ZVZIlUaP75U3SrHTDFjjDIq4GAyGydoRtrBcck3e25IgUlMfDlxu2oQYuLHjUt8zFAA18/sMMn3pgVjhYBQqq5VskExUTfjj6DuCOamyYef9cWMgpWVjLGTgdYRkM8AzC5qXDh2j2Xn0zRxyYQirE7eGDYbYsEG0ypsb/s3Wd4wzL+1eWLJnwCMjDHaq9dBQMh3E2edmBJ/qbuepBt7M45jyoiMPgM5f+c0Xj+dJa1PGTbJcWDaecqgRsZYQJUmIBQf2vjq2FSXxzmYFptz7/TJLQI5ZVHi/hHSJSlwS173RapNjLFpwRipp5tj9mmoqEnjWr6nz2yIhWP2aXw2ruV7qCiCMTYpJJCBYkR+MFVA/q8YaWWMSTWstzHgWZMzek5XyeRyqj3Ur1AtCwhkQHVkfcpWy4K497vk1qAsGBBKWeodYpTFrj+UlTY1ze68OCxihLe2tnZRRkbGFQAPAFA20IcLYANaa4RbOOedgwYNmq8A4FV8fyhlFP2R643ESn9VX7Ir5N1isWwaP378Sa1W63E4HMSEBCQtLc3T0NBA3x8q+5GpADaRgTdrs+N+u33cV/fD7UfIhkJRnfn5+UsrKyupYfGB8P/e7x2a8Llgw2q17tLr9b/0AuIRUL31rFIRJINUkddfXjlW2a2pkVzBBuf8XnZ29gc1NTXOYGxQAAfq4slNBChGADporYxtvmsa2uZojhI1KRCoU9m/m+JinnN3dHTsNhgMhwWIyMhIT09Pj48JnU7nsdvtdH0/1LmGBEhix38oS4Lynij7Xq/3pkajofaOUlSZJf5xQulsCwhEGJczikSPiiJ9YvxbSjH3mUi9u2Z6o5l0w2g0bs3NzW1TAYLEzhMSiPJpOedSb7veVKQvbts2yp+lbZN+aH9t3Ns2l8t1OTo6+jsVIKyywD1+wAoWjJxzkuh4/+MGrUl/Ksu2++Wj7RSgBQUFWysqKmwajcbr8XiEinojIiI8brebru8B6ATw9yPKqiYTRJPd7b4zONk4MlW5JkoT462bccVELjlz5sye9PT0Jj82lDFCh/ab/nuqdg3nXBK8iqulscvr341TGhKa4XA4zDqdbm8AlxALVGt6fWMQDpDHmmwCI7KEXJKTk7PjyJEjtKFwh8iQDgDUCgRs/cIBQidBvfLsE6eNv3/qVbOZABUXF+9ctmxZl9frVbqBhIz61e5Q7lcFhHNOL2iq250tEZlHk5LJKMXFoaw6syxcZw0GA7WDShAtAJpFVvQXEGrxVnzf/vXwNZc+NJBRRap2JCUlHbNYLKLPuAvgLIBboTZX3lfLCJ2WMkVVVqinq7CwsKq8vLxH9v8lABcAuMMBQXPVAvGdfSZoE1zygYniwrh48WIbSTSAo/L7tHAxSPNDAuGc09uBsoa/zketaFhgqMo83UJ60dTUdDIlJeU2gFrZFX0CoFrQBBASMlpEIJxO51WtVks9RhUAion/PEIyQjuIg7q8W+u8efPWlJaWkjj121AFRAYjvV9ljEmntv4e/wCSooRnQMk6uQAAAABJRU5ErkJggg==);
+            background-size: 34px 41px;
+        }
+    </style>
+    <style type="text/css" data-ymaps="css-modules">
+        .ymaps-2-1-78-hint {
+            position: absolute;
+            padding: 1px;
+            -webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,.15),0 5px 15px -7px rgba(0,0,0,.5);
+            -moz-box-shadow: inset 1px 1px 10px #aaa;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,.15),0 5px 15px -7px rgba(0,0,0,.5)
+        }
+
+        .ymaps-2-1-78-hint__text {
+            display: block;
+            padding: 2px 5px;
+            vertical-align: top;
+            background: #fff;
+            font: 11px/15px Verdana,Arial,sans-serif;
+            white-space: nowrap
+        }
+
+        .ymaps-2-1-78-hint_to_bottom .ymaps-2-1-78-hint__text, .ymaps-2-1-78-hint_to_top .ymaps-2-1-78-hint__text {
+            position: relative;
+            z-index: 10
+        }
+
+        .ymaps-2-1-78-hint__tail {
+            position: absolute;
+            z-index: 9;
+            display: block;
+            width: 13px;
+            height: 13px;
+            background: rgba(0,0,0,.15);
+            font: 0/0 a
+        }
+
+            .ymaps-2-1-78-hint__tail:after {
+                position: absolute;
+                width: 13px;
+                height: 13px;
+                content: '';
+                background-color: #fff
+            }
+
+        .ymaps-2-1-78-hint_to_top .ymaps-2-1-78-hint__tail {
+            top: 100%;
+            margin-left: 17px;
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            -webkit-transform-origin: top left;
+            -moz-transform-origin: top left;
+            -ms-transform-origin: top left;
+            -o-transform-origin: top left;
+            transform-origin: top left;
+            background: -webkit-linear-gradient(45deg,rgba(0,0,0,.15) 50%,rgba(0,0,0,0) 50%);
+            background: -moz-linear-gradient(45deg,rgba(0,0,0,.15) 50%,rgba(0,0,0,0) 50%);
+            background: -o-linear-gradient(45deg,rgba(0,0,0,.15) 50%,rgba(0,0,0,0) 50%);
+            -webkit-box-shadow: inset 0 0 1px -2px rgba(0,0,0,.15),3px -3px 13px 1px rgba(0,0,0,.2);
+            -moz-box-shadow: inset 1px 1px 10px #aaa;
+            box-shadow: inset 0 0 1px -2px rgba(0,0,0,.15),3px -3px 13px 1px rgba(0,0,0,.2)
+        }
+
+            .ymaps-2-1-78-hint_to_bottom .ymaps-2-1-78-hint__tail:after, .ymaps-2-1-78-hint_to_top .ymaps-2-1-78-hint__tail:after {
+                bottom: 1px;
+                left: 1px
+            }
+
+        .ymaps-2-1-78-hint_to_bottom .ymaps-2-1-78-hint__tail {
+            bottom: 100%;
+            margin-left: 4px;
+            -webkit-transform: rotate(135deg);
+            -moz-transform: rotate(135deg);
+            -ms-transform: rotate(135deg);
+            -o-transform: rotate(135deg);
+            transform: rotate(135deg);
+            -webkit-transform-origin: 100% 100%;
+            -moz-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+            -o-transform-origin: 100% 100%;
+            transform-origin: 100% 100%
+        }
+
+        .ymaps-2-1-78-hint__x {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: -2px -5px -2px 0;
+            cursor: pointer;
+            vertical-align: bottom;
+            opacity: .2;
+            background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+PHBhdGggZD0iTTYgMGE2IDYgMCAxIDAgMCAxMkE2IDYgMCAwIDAgNiAwem0zLjUzIDguMjdMOC4yNyA5LjUzIDYgNy4yNiAzLjczIDkuNTMgMi40NyA4LjI3IDQuNzQgNiAyLjQ3IDMuNzNsMS4yNi0xLjI2TDYgNC43NGwyLjI3LTIuMjcgMS4yNiAxLjI2TDcuMjYgNmwyLjI3IDIuMjd6Ii8+PC9zdmc+) no-repeat 50% 50%
+        }
+
+            .ymaps-2-1-78-hint__x:hover {
+                opacity: 1
+            }
+        /**/
+    </style>
+    <script src="~/Scripts/angular-ymaps.js"></script>
+    <script>
+
+
+        var mainApp = angular.module("mainApp", ['ymaps']);
+        var idViewBag = @ViewBag.IdLake;
+        mainApp.controller("mainController", function ($scope, $http) {
+            $scope.LakeModel;
+            $scope.IdLake = idViewBag;
+            $scope.Longitude;
+            $scope.Latitude;
+            $scope.Coords = [];
+            $scope.Zoom = 13;
+            //let map;
+
+
+
+            $http({
+                method: 'GET',
+                url: '/Lakes/GetLakeById/'+$scope.IdLake,
+
+            })
+                .then(function succes(responce) {
+                    $scope.LakeModel = responce.data;
+                     console.log($scope.LakeModel);
+                    $scope.Longitude = $scope.LakeModel.Post.Longitude;
+
+                    $scope.Latitude = $scope.LakeModel.Post.Latitude;
+                    $scope.Coords = [$scope.Longitude, $scope.Latitude];
+                    console.log($scope.Coords);
+
+                });
+
+        });
+    </script>
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation" ng-controller="mainController">
+    @*<div class="container">
+            <div class="blog-list container-fluid no-padding">
+                <div class="row">
+                    <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+            <!-- Content Area -->
+            <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+                <article class="type-post blog-onecolumn format-image">
+                    <div class="entry-cover ">
+                        <div>
+                            <div class="photo-slider container-fluid no-padding">
+                                <!-- Main Carousel -->
+                                <div id="main-carousel" class="carousel slide carousel-fade col-offset-2">
+                                    <div class="carousel-inner" role="listbox">
+                                        <div class="item active">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Lakes/{{LakeModel.Images[0].Name}}" alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <div class="item" ng-if="LakeModel.Images[1]!=null">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Lakes/{{LakeModel.Images[1].Name}}" alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <div class="item " ng-if="LakeModel.Images[2]!=null">
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Lakes/{{LakeModel.Images[2].Name}}" alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
+                                            <i class="fa fa-angle-left"></i>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
+                                            <i class="fa fa-angle-right"></i>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div><!-- Main Carousel /-  -->
+                                </div><!-- Photo Slider /- -->
+
+                            </div>
+
+
+                            <div class="entry-meta">
+                                <div class="post-date">
+                                    <p><span>{{LakeModel.Post.Name}}</span></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entry-title">
+                        <h3>Описание: {{LakeModel.Post.Description}}</h3>
+                    </div>
+                    <div class="entry-content">
+                        <p>Локация: {{LakeModel.Post.Location}}</p>
+                        <p>Температура воды: {{LakeModel.Post.WaterTemperatureBySeasons}}</p>
+                        <p>Качество воды: {{LakeModel.Post.QualityOfWater}}</p>
+
+
+
+                    </div>
+                </article>
+
+
+
+            </div><!-- Content Area /- -->
+            @*@{Html.RenderPartial("CategoriesPartial");}*@
+        </div><!-- Row /- -->
+        <div center="Coords" style="width:500px; height:500px;">
+            <yandex-map center="center" zoom="13" style="width:500px; height:500px;">
+                <ymap-marker coordinates="Coords"></ymap-marker>
+            </yandex-map>
+        </div>
+    </div>
+
+</body>

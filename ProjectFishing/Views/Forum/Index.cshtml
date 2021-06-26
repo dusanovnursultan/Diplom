@@ -1,0 +1,101 @@
+﻿<script>
+    var mainApp = angular.module("mainApp", ['angularUtils.directives.dirPagination']);
+    mainApp.controller("mainController", function ($scope, $http) {
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.Themes = [];
+        download = function (num) {
+            $http({
+                method: 'GET',
+                url: '/Forum/GetThemes?Page=' + num,
+            })
+                .then(function succes(responce) {
+                    $scope.Themes = responce.data;
+                    console.log($scope.Themes);
+                });
+        };
+        download(1);
+        $scope.pageChangeHandler = function (num) {
+            download(num);
+        };
+    });
+</script>
+<head>
+    <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/dat-menu.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/main-stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/responsive.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Oswald:300,400,700|Source+Sans+Pro:300,400,600,700&amp;subset=latin,latin-ext" />
+
+</head>
+<style>
+</style>
+<body>
+    <main class="site-main page-spacing" ng-controller="mainController">
+        <div class="page-banner faq-banner container-fluid no-padding">
+            <div class="page-banner-content">
+                <div class="container">
+                    <h3>Форум</h3>
+                    <p>На этой страницы вы можете задать вопросы на интересующие вас темы. Или найти ответы</p>
+                </div>
+            </div>
+            <div class="banner-content container-fluid no-padding">
+                <div class="container">
+                    <h4 class="pull-left">Форум</h4>
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="#">Home</a></li>
+                        <li class="active">Forum</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="blog-list container-fluid no-padding">
+            <div class="container">
+                <div class="row">
+                    <div id="main">
+                        <div class="forum-block">
+                            <br />
+                            <hr />
+                            <h2>Темы форума</h2>
+                            <!-- BEGIN .forum-group -->
+                            <div class="forum-group">
+                                <!-- BEGIN .forum-link -->
+                                <div class="forum-link" dir-paginate="Theme in Themes.Themes | itemsPerPage: pageSize" total-items="Themes.TotalDishesCount" current-page="currentPage">
+                                    <a href="/Forum/ShowDiscussions/{{Theme.Theme.ThemeDiscussionId}}">
+                                        <i class="forum-icon">
+                                            <i class="fa fa-gamepad"></i>
+                                        </i>
+                                        <strong>{{Theme.Theme.Name}}</strong>
+                                        <span>{{Theme.Theme.Description}}.</span>
+                                    </a>
+                                    <div class="right">
+                                        <div class="forum-numbers">
+                                            <span>{{Theme.Count}} обсуждения</span>
+                                        </div>
+                                    </div>
+                                    <!-- BEGIN .forum-link -->
+                                </div>
+                            </div>
+                            <div class="content-padding">
+                                <div class="forum-description">
+                                    <div>
+                                        <div class="text-center">
+                                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" auto-hide="false">
+
+                                            </dir-pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="clear-float"></div>
+        </div>
+    </main>
+</body>
+

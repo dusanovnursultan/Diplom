@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation">
+    <div id="site-loader" class="load-complete" style="display: none;">
+        <div class="loader">
+            <div class="loader-inner ball-clip-rotate">
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <main class="site-main page-spacing">
+
+        <!-- Photo Slider -->
+        <div class="photo-slider container-fluid no-padding">
+            <!-- Main Carousel -->
+            <div id="main-carousel" class="carousel slide carousel-fade col-offset-2" data-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <div class="item">
+                        <div class="slider-image">
+                            <img src="~/images/slider/slider-1.jpg" alt="slider-1">
+                            <div class="carousel-caption">
+                                <div class="container">
+                                    <h5>Добро пожаловать!</h5>
+                                    <h3>Мы любим рыбалку, ведь это <span>отличный отдых</span></h3>
+
+                                    <a href="#" title="Learn More" class="btn btn-default">Подробнее</a>
+                                    <a href="#" title="Contact Us" class="btn btn-default bg">Связаться с нами</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item active">
+                        <div class="slider-image">
+                            <img src="~/images/slider/slider-2.jpg" alt="slider-2">
+                            <div class="carousel-caption">
+                                <div class="container">
+                                    <h5>Добро пожаловать!</h5>
+                                    <h3>Путь к сердцу рыбака <span>лежит через его наживку</span></h3>
+                                    <a href="#" title="Learn More" class="btn btn-default">Подробнее</a>
+                                    <a href="#" title="Contact Us" class="btn btn-default bg">Связаться с нами</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="slider-image">
+                            <img src="~/images/slider/slider-3.jpg" alt="slider-3">
+                            <div class="carousel-caption">
+                                <div class="container">
+                                    <h5>Добро пожаловать!</h5>
+                                    <h3>Не бывает рыбы больше<span>чем та, которая сорвалась</span></h3>
+                                    <a href="#" title="Learn More" class="btn btn-default">Подробнее</a>
+                                    <a href="#" title="Contact Us" class="btn btn-default bg">Связаться с нами</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div><!-- Main Carousel /-  -->
+        </div><!-- Photo Slider /- -->
+        <!-- Why Choose Us -->
+        <div class="intro-section tr-border container-fluid no-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="intro-content">
+                            <i class="animated rotateIn"><img src="~/images/a7b770871cb9d7ebcd97018dcf995bcf.jpg" alt="choose-1"></i>
+                            <h3>Энциклопедия озер</h3>
+                            <p>В разделе энкциклопедия вы можете посмотреть подробную информацию об озере</p>
+                            <a href="/Lakes/ShowLakes">Подробнее</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="intro-content">
+                            <i class="animated rotateIn"><img src="~/images/untitled.fr12_-_0003_7.jpg" alt="choose-2"></i>
+                            <h3>Энциклопедия рыб</h3>
+                            <p>В разделе энкциклопедия вы можете посмотреть подробную информацию о рыбах</p>
+                            <a href="/Fishes/ShowFishes">Подробнее</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="intro-content">
+                            <i class="animated rotateIn"><img src="~/images/3a95c82e9b87c4f2e968c183ae5fd6af.jpg" alt="choose-3"></i>
+                            <h3>Форум</h3>
+                            <p>На форумы вы можете найти информацию, или задать вопрос</p>
+                            <a href="/Forum/Index">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Container /- -->
+            <div class="section-padding"></div>
+        </div><!-- Why Choose Us /- -->
+    </main>
+</body>

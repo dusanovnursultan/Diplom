@@ -1,0 +1,77 @@
+﻿@model ProjectFishing.Models.Discussion
+    
+@using (Html.BeginForm("AddDiscussion", "Forum", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <body data-offset="200" data-spy="scroll" data-target=".ow-navigation">
+        <div id="site-loader" class="load-complete" style="display: none;">
+            <div class="loader">
+                <div class="loader-inner ball-clip-rotate">
+                    <div></div>
+                </div>
+            </div>
+        </div><!-- Loader /- -->
+        @Html.AntiForgeryToken()
+        <main class="site-main page-spacing">
+            <div class="page-banner faq-banner container-fluid no-padding">
+                <div class="page-banner-content">
+                    <div class="container">
+                        <h3>Recent Updates</h3>
+                        <p>You wanna be where you can see our troubles are all the same you wanna be where everybody knows Your name days are all share them with me oh baby are the voyages of the Starship Enterprise</p>
+                    </div>
+                </div>
+                <div class="banner-content container-fluid no-padding">
+                    <div class="container">
+                        <h4 class="pull-left">Blog Posts</h4>
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="#">Home</a></li>
+                            <li class="active">Latest News</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- Blog List Section -->
+            <div id="blog-list" class="blog-list container-fluid no-padding">
+                <div class="section-padding"></div>
+                <!-- Container -->
+                <div class="container">
+                    <!-- Row -->
+                    <div class="row">
+                        <!-- Content Area -->
+                        <div class="content-area content-area75 blogpost col-md-9  col-sm-8">
+                            <article class="type-post blog-onecolumn format-image">
+                                <div class="entry-content">
+                                    <div class="bs-example">
+                                        <label>
+                                            Тема вопроса:
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Theme, new { @class = "form-control", Name = "Theme", Value = ViewBag.Theme, disabled = "disabled" })
+                                    </div>
+                                    <hr />
+                                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control inputBlog", Name = "Title", placeholder = "Название вопроса" })
+                                    <hr />
+                                    <div class="bs-example">
+                                        @Html.TextAreaFor(model => model.Text, new { @class = "form-control inputBlog", Name = "Text", placeholder = "Описание обсуждения" })
+                                    </div>
+                                    
+                                    <hr />
+
+                                    <!-- Single button -->
+
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Загрузка изображений</label>
+                                        <input type="file" id="InputFile" name="files" accept="image/png, image/jpeg, image/jpg">
+                                        <p class="help-block">Загрузить фото</p>
+                                    </div>
+                                </div>
+                                <input type="submit" value="Создать" class="btn btn-default" />
+                            </article>
+                        </div><!-- Content Area /- -->
+                    </div><!-- Row /- -->
+
+                    <div class="section-padding"></div>
+                </div><!-- Container /- -->
+            </div><!-- Blog List Section /- -->
+        </main>
+    </body>
+}
+

@@ -1,0 +1,148 @@
+﻿
+<script>
+    var myApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
+    myApp.controller('mainController', function ($scope, $http) {
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.Posts = [];
+        download = function (num) {
+            $scope.currentPage = num;
+            console.log(num);
+            $http({
+                method: 'GET',
+                url: '/Shops/GetShops?Page=' + num,
+            })
+                .then(function succes(responce) {
+                    $scope.Posts = responce.data;
+                    console.log($scope.Posts);
+                });
+        };
+        download(1);
+        $scope.pageChangeHandler = function (num) {
+            download(num);
+        };
+    });
+
+</script>
+<head>
+    <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation" ng-controller="mainController">
+    <!-- Loader -->
+    @*<div id="site-loader" class="load-complete">
+            <div class="loader">
+                <div class="loader-inner ball-clip-rotate">
+                    <div></div>
+                </div>
+            </div>
+        </div> Loader /-*@
+    <!--a id="top"></a-->
+    <!-- Main Container -->
+    <!-- Header -->
+
+
+    <main class="site-main page-spacing">
+        <!-- Page Banner -->
+        <div class="page-banner gallery-banner container-fluid no-padding">
+            <div class="page-banner-content">
+                <div class="container">
+                    <h3>Магазины</h3>
+                    <p>Здесь вы можете ознакомиться с информацией о магазинах-партнёрах сайта</p>
+                </div>
+            </div>
+            <div class="banner-content container-fluid no-padding">
+
+            </div>
+        </div>
+        <!-- Gallery -->
+        <div class="gallery container-fluid no-padding">
+            <div class="section-padding"></div>
+            <!-- Container -->
+            <div class="container">
+                <!-- Section Header -->
+
+                <div class="row">
+                
+
+
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-8 " dir-paginate="item in Posts.Posts | itemsPerPage: pageSize" total-items="Posts.TotalDishesCount" current-page="currentPage">
+                            <div class="gallery-box">
+                                <img src="~/images/ForViews/Shops/{{item.Images[0].Name}}" alt="gallery-1">
+                                <div class="gallery-box-hover">
+                                    <h5>{{item.Post.Name}}</h5>
+                                    <p>{{item.Post.Description}}</p>
+                                    <a href="/Shops/ShowMoreInfoAboutShop/{{item.Post.PostId}}" title="Подробнее"></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                 
+                  
+                </div>
+
+
+            </div><!-- Container / -->
+            <div class="section-padding">
+                <div>
+                    <div class="text-center">
+                        <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <!-- Place somewhere in the <body> of your page -->
+            <div class="gallery-active">
+                <div class="gallery-content">
+                    <span class="act-close"><i class="fa fa-times"></i></span>
+                    <div id="slider" class="flexslider act-main">
+                        <ul class="slides">
+                            <li id="test-modal-1">
+                                <div class="gallery-box-act">
+                                    <img src="~/images/gallery/gallery-active2.jpg" alt="gallery" />
+                                </div>
+                            </li>
+                            <li id="test-modal-2">
+                                <div class="gallery-box-act">
+                                    <img src="~/images/gallery/gallery-active.jpg" alt="gallery" />
+                                </div>
+                            </li>
+                            <li id="test-modal-3">
+                                <div class="gallery-box-act">
+                                    <img src="~/images/gallery/gallery-3.jpg" alt="gallery" />
+                                </div>
+                            </li>
+                            <li id="test-modal-4">
+                                <div class="gallery-box-act">
+                                    <img src="~/images/gallery/gallery-4.jpg" alt="gallery" />
+                                </div>
+                            </li>
+                            <li id="test-modal-5">
+                                <div class="gallery-box-act">
+                                    <img src="~/images/gallery/gallery-5.jpg" alt="gallery" />
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="carousel" class="flexslider act-thumbnail">
+                        <ul class="slides">
+                            <li><img src="~/images/gallery/gallery-1.jpg" alt="full 1" /></li>
+                            <li><img src="~/images/gallery/gallery-2.jpg" alt="full 2" /></li>
+                            <li><img src="~/images/gallery/gallery-3.jpg" alt="full 3" /></li>
+                            <li><img src="~/images/gallery/gallery-4.jpg" alt="full 4" /></li>
+                            <li><img src="~/images/gallery/gallery-5.jpg" alt="full 5" /></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Gallery / -->
+
+    </main>
+
+
+</body>
+

@@ -1,0 +1,53 @@
+﻿<script>
+    var myApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
+    myApp.controller('mainController', function ($scope, $http) {
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.News = [];
+        download = function (num) {
+            $scope.currentPage = num;
+            console.log(num);
+            $http({
+                method: 'GET',
+                url: '/News/GetNews?Page=' + num,
+            })
+                .then(function succes(responce) {
+                    $scope.News = responce.data;
+                    console.log($scope.News);
+                });
+        };
+        download(1);
+        $scope.pageChangeHandler = function (num) {
+            download(num);
+        };
+    });
+
+</script>
+<head>
+    <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8" ng-controller="mainController">
+                <div>
+                    <h1>Tasty Paginated Menu</h1>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul>
+                                <li dir-paginate="item in News.News | itemsPerPage: pageSize" total-items="News.TotalDishesCount" current-page="currentPage">
+                                    {{ item.Title }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-center">
+                        <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

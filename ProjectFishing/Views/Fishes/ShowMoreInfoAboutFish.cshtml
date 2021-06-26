@@ -1,0 +1,109 @@
+﻿
+<head>
+
+    <script>
+
+
+        var mainApp = angular.module("mainApp", []);
+        var idViewBag = @ViewBag.IdFish;
+        mainApp.controller("mainController", function ($scope, $http) {
+            $scope.FishModel;
+            $scope.ImagesList;
+            $scope.IdFish = idViewBag;
+
+            $http({
+                method: 'GET',
+                url: '/Fishes/GetFishById/'+$scope.IdFish,
+
+            })
+                .then(function succes(responce) {
+                    $scope.FishModel = responce.data;
+                   
+                    console.log($scope.FishModel);
+                });
+
+        });
+    </script>
+</head>
+<body data-offset="200" data-spy="scroll" data-target=".ow-navigation" ng-controller="mainController">
+
+    @*<div class="container">
+            <div class="blog-list container-fluid no-padding">
+                <div class="row">
+                    <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+            <!-- Content Area -->
+            <div class="content-area content-area75 blogpost col-md-9 col-sm-8">
+                <article class="type-post blog-onecolumn format-image">
+                    <div class="entry-cover ">
+                        <div>
+                            <div class="photo-slider container-fluid no-padding">
+                                <!-- Main Carousel -->
+                                <div id="main-carousel" class="carousel slide carousel-fade col-offset-2" >
+                                    <div class="carousel-inner" role="listbox">
+                                        <div class="item active" >
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Fishies/{{FishModel.Images[0].Name}}" alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <div class="item" ng-if="FishModel.Images[1]!=null" >
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Fishies/{{FishModel.Images[1].Name}}"  alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <div class="item " ng-if="FishModel.Images[2]!=null" >
+                                            <div class="slider-image">
+                                                <img style="height:500px" src="~/images/ForViews/Fishies/{{FishModel.Images[2].Name}}"  alt="slider-1">
+                                            </div>
+                                        </div>
+                                        <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
+                                            <i class="fa fa-angle-left"></i>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
+                                            <i class="fa fa-angle-right"></i>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div><!-- Main Carousel /-  -->
+                                </div><!-- Photo Slider /- -->
+
+                            </div>
+
+                            <div class="entry-meta">
+                                <div class="post-date">
+                                    <p><span>{{FishModel.Post.Name}}</span></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entry-title">
+                        <h3>Описание: {{FishModel.Post.Description}}</h3>
+                    </div>
+                    <div class="entry-content">
+                        <p>Места обитания: {{FishModel.Post.Habitats}}</p>
+                        <p>Вид: {{FishModel.Post.ClassificationOfFish}}</p>
+                        <p>Размеры: {{FishModel.Post.Size}}</p>
+                        <p>Способы ловли: {{FishModel.Post.FishingMethod}}</p>
+                        <p>Время нереста: {{FishModel.Post.SpawningTime}}</p>
+
+
+                    </div>
+                </article>
+
+
+
+            </div><!-- Content Area /- -->
+            <!-- Widget Area -->
+            @*@{Html.RenderPartial("CategoriesPartial");}*@
+        </div><!-- Row /- -->
+
+    </div>
+</body>
