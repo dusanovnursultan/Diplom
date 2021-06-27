@@ -56,7 +56,7 @@ namespace ProjectFishing.Controllers
             }
             AdsModel.Posts = AdsList.ToPagedList(pageNumber, pageSize);
             AdsModel.TotalDishesCount = AdsList.Count();
-            return new JsonResult() { Data = AdsList, JsonRequestBehavior = JsonRequestBehavior.AllowGet, MaxJsonLength = Int32.MaxValue };
+            return new JsonResult() { Data = AdsModel, JsonRequestBehavior = JsonRequestBehavior.AllowGet, MaxJsonLength = Int32.MaxValue };
         }
         [HttpGet]
         public ActionResult GetAdById(int Id)
