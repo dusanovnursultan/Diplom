@@ -94,10 +94,6 @@ namespace ProjectFishing.Controllers
             }
             return View(_chat);
         }
-      
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddCategory(CategoryAd model )
