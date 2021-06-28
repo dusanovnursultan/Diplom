@@ -48,6 +48,7 @@ namespace ProjectFishing.Hubs
             var mainUser = _dbUser.Users.Find(MainUserId);
             var secondaryUser = _dbUser.Users.Find(SecondaryUserId);
            var  _chat = _db.Chats.Where(u => u.MainUser == MainUserId && u.SecondaryUser == SecondaryUserId).FirstOrDefault();
+            
             if (_chat == null)
             {
                 var _roomName = MainUserId + SecondaryUserId;

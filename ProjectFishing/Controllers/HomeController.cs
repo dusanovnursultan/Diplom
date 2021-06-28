@@ -63,9 +63,14 @@ namespace ProjectFishing.Controllers
                var _chats = _db.Chats.Where(u => u.MainUser == ActiveUserId || u.SecondaryUser == ActiveUserId).FirstOrDefault();
                 if (_chats == null)
                 {
-                    RedirectToAction("Index");
+
+                    return RedirectToAction("Index");
                 }
-                return View(_chats);
+                else
+                {
+                    return View(_chats);
+                }
+
             }
             var SecondUser = dbContext.Users.Where(x => x.Id == Id).FirstOrDefault();
 
@@ -77,6 +82,7 @@ namespace ProjectFishing.Controllers
                 _chat.Read = true;
                 _db.SaveChanges();
             }
+            
             if (_chat == null)
             {
                 var _roomName = ActiveUser.GetUserName() + " x " +SecondUser.UserName;
